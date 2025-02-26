@@ -74,4 +74,45 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class);
     }
+
+
+    /**
+     * Get the calendars that the user belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function calendars()
+    {
+        return $this->belongsToMany(Calendar::class);
+    }
+
+    /**
+     * Get the departments that the user belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function departments()
+    {
+        return $this->belongsToMany(Departament::class);
+    }
+
+    /**
+     * Get the holidays associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function holidays()
+    {
+        return $this->hasMany(Holiday::class);
+    }
+
+    /**
+     * Get the timesheets associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function timesheets()
+    {
+        return $this->hasMany(Timesheet::class);
+    }
 }
