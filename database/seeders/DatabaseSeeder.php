@@ -14,10 +14,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        //- Cargar los worldseeders
+        $this->call(WorldTableSeeder::class);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Jan Carlos Jaimes',
+            'email' => 'softsispro@gmail.com',
+            'password' => bcrypt('Carlos0723+'),
         ]);
+
+
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StateResource\Pages;
-use App\Filament\Resources\StateResource\RelationManagers;
-use App\Models\State;
+use App\Filament\Resources\CalendarResource\Pages;
+use App\Filament\Resources\CalendarResource\RelationManagers;
+use App\Models\Calendar;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,31 +13,31 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StateResource extends Resource
+class CalendarResource extends Resource
 {
-    protected static ?string $model = State::class;
+    protected static ?string $model = Calendar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-globe-americas';
+    protected static ?string $navigationIcon = 'heroicon-s-calendar-date-range';
     protected static ?string $navigationGroup = "System Management";
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(3)
             ->schema([
-                Forms\Components\Select::make('country_id')
-                    ->relationship('country', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('latitude')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('year')
+                    ->required()
                     ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('longitude')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\Toggle::make('is_active')
+                    ->minValue(2000)
+                    ->default(date('Y'))
+                    ->maxValue(2050),
+                Forms\Components\Toggle::make('active')
+                    ->inline(false)
+                    ->default(true)
                     ->required(),
             ]);
     }
@@ -46,18 +46,11 @@ class StateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('country.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('latitude')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('year')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('longitude')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
+                Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -67,16 +60,13 @@ class StateResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -95,9 +85,9 @@ class StateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStates::route('/'),
-            'create' => Pages\CreateState::route('/create'),
-            'edit' => Pages\EditState::route('/{record}/edit'),
+            'index' => Pages\ListCalendars::route('/'),
+            'create' => Pages\CreateCalendar::route('/create'),
+            'edit' => Pages\EditCalendar::route('/{record}/edit'),
         ];
     }
 }
