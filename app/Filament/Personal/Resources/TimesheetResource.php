@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Personal\Resources;
 
-use App\Filament\Resources\TimesheetResource\Pages;
-use App\Filament\Resources\TimesheetResource\RelationManagers;
+use App\Filament\Personal\Resources\TimesheetResource\Pages;
+use App\Filament\Personal\Resources\TimesheetResource\RelationManagers;
 use App\Models\Timesheet;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,14 +13,18 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
 
     protected static ?string $navigationIcon = 'heroicon-c-table-cells';
-    protected static ?string $navigationGroup = "Employee Management";
-    protected static ?int $navigationSort = 2;
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+    }
 
     public static function form(Form $form): Form
     {
@@ -28,9 +32,6 @@ class TimesheetResource extends Resource
             ->schema([
                 Forms\Components\Select::make('calendar_id')
                     ->relationship(name: 'calendar', titleAttribute: 'name')
-                    ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship(name: 'user', titleAttribute: 'name')
                     ->required(),
                 Forms\Components\Select::make('type')
                     ->options([
@@ -59,7 +60,6 @@ class TimesheetResource extends Resource
                         'work' => 'success',
                         'pause' => 'info',
                     })
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('day_in')
                     ->dateTime()
