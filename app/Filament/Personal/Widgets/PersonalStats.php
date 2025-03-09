@@ -40,7 +40,10 @@ class PersonalStats extends BaseWidget
 
     protected function getTotalWork(User $user)
     {
-        $timesheets = $user->timesheets->where('type', 'work');
+        $timesheets = $user->timesheets()
+            ->where('type', 'work')
+            ->whereDate('created_at', Carbon::today())
+            ->get();
         $sumHours = 0;
         foreach ($timesheets as $timesheet) {
             $dayIn = Carbon::parse($timesheet->day_in);
@@ -54,7 +57,10 @@ class PersonalStats extends BaseWidget
 
     protected function getTotalPause(User $user)
     {
-        $timesheets = $user->timesheets->where('type', 'pause');
+        $timesheets = $user->timesheets()
+            ->where('type', 'pause')
+            ->whereDate('created_at', Carbon::today())
+            ->get();
         $sumHours = 0;
         foreach ($timesheets as $timesheet) {
             $dayIn = Carbon::parse($timesheet->day_in);
