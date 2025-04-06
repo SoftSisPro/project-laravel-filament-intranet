@@ -5,6 +5,8 @@
 
     RewriteEngine On
 
+    RewriteBase /isma_filamentphp
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
