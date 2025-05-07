@@ -2,12 +2,12 @@
 
 // config for Altwaireb/World
 return [
-    'insert_activations_only' => false,
+    'insert_activations_only' => true,
     'countries' => [
         'activation' => [
             'default' => true,
             'only' => [
-                'iso2' => [],
+                'iso2' => ['CO'],
                 'iso3' => [],
             ],
             'except' => [
