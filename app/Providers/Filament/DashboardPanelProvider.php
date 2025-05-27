@@ -58,8 +58,8 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()
-                ->roleToAssign('super-admin')
-                ->restrictedRoles(['super-admin']),
+                    ->roleToAssign('super_admin')
+                    ->restrictedRoles(['super_admin']),
             ]);
     }
 }
