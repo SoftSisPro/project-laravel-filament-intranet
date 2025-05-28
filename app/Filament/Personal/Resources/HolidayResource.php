@@ -19,6 +19,25 @@ class HolidayResource extends Resource
 {
     protected static ?string $model = Holiday::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $navigationBadgeTooltip = 'Holidays in Pending';
+
+
+
+    public static function getNavigationBadge(): ?string
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', Auth::user()->id)
+            ->where('type','pending')
+            ->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', Auth::user()->id)
+            ->where('type','pending')
+            ->count() > 2 ? 'warning' : 'danger';
+    }
 
     public static function getEloquentQuery(): Builder
     {
