@@ -10,9 +10,12 @@
         "altwaireb/laravel-world": "^1.0",
         "bezhansalleh/filament-panel-switch": "^1.1",
         "bezhansalleh/filament-shield": "^3.3",
+        "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.10.1",
+        "pxlrbt/filament-excel": "^2.4",
+        "pxlrbt/filament-spotlight": "^1.3",
         "shanerbaner82/panel-roles": "^0.0.3"
     },
     "require-dev": {

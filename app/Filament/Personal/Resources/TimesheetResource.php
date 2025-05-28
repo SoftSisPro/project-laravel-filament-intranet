@@ -5,6 +5,7 @@ namespace App\Filament\Personal\Resources;
 use App\Filament\Personal\Resources\TimesheetResource\Pages;
 use App\Filament\Personal\Resources\TimesheetResource\RelationManagers;
 use App\Models\Timesheet;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +15,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class TimesheetResource extends Resource
 {
@@ -91,7 +95,26 @@ class TimesheetResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    //Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('Table')
+                            ->fromTable()
+                            ->withColumns([
+                                Column::make('id'),
+                                Column::make('calendar.id'),
+                                Column::make('calendar.name'),
+                                Column::make('user.id'),
+                                Column::make('user.name'),
+                                Column::make('type'),
+                                Column::make('day_in'),
+                                Column::make('day_out'),
+                            ])
+                            ->withFilename('Timesheet_' . date('Y-m-d') . '_export'),
+                        ExcelExport::make('Form')
+                            ->fromForm()
+                            ->askForFilename()
+                            ->askForWriterType()
+                    ])
                 ]),
             ]);
     }

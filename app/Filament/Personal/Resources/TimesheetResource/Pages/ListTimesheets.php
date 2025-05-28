@@ -3,7 +3,9 @@
 namespace App\Filament\Personal\Resources\TimesheetResource\Pages;
 
 use App\Filament\Personal\Resources\TimesheetResource;
+use App\Imports\MyTimesheet;
 use Carbon\Carbon;
+use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -142,6 +144,11 @@ class ListTimesheets extends ListRecords
                 }),
             Actions\CreateAction::make()
                 ->icon('heroicon-s-plus-circle'),
+            ExcelImportAction::make()
+                ->color('warning')
+                ->label('Importar')
+                ->use(MyTimesheet::class)
+                ->successNotificationTitle('Importación exitosa')
         ];
     }
 }

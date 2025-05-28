@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Shanerbaner82\PanelRoles\PanelRoles;
 
 class PersonalPanelProvider extends PanelProvider
@@ -31,7 +32,7 @@ class PersonalPanelProvider extends PanelProvider
             ->login()
             ->default()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Personal/Resources'), for: 'App\\Filament\\Personal\\Resources')
             ->discoverPages(in: app_path('Filament/Personal/Pages'), for: 'App\\Filament\\Personal\\Pages')
@@ -61,6 +62,7 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                SpotlightPlugin::make(),
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -72,7 +74,6 @@ class PersonalPanelProvider extends PanelProvider
                 NavigationItem::make('Analytics')
                     ->url('https://filament.pirsch.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-presentation-chart-line')
-                    ->sort(3)
             ]);
     }
 }
